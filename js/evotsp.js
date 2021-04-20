@@ -87,7 +87,21 @@
     // You should add each of these to `#best-route-list`
     // (after clearing it first).
     function getBestRoutes(event) {
-        alert('You need to implement getBestRoutes()');
+        $('#best-route-list').text('');
+        const runId = $('#runId-text-field').val();
+        const numLimit = $('#num-best-to-get').val();
+        const generation = $('#generation-text-field').val();
+        const url = baseUrl+`/best?runId=`+runId+`&generation=`+generation+`&numToReturn=`+numLimit;
+
+        $.ajax({
+            "url": url,
+            "method": "GET",
+            "timeout": 0,
+        }).done(function (response) {
+            for (let i = 0; i < response.length; i++){
+                $('#best-route-list').append(`<ol>${response[i].length} (${response[i].routeId})</ol>`);
+            }
+        });
     }
 
     // Make a `GET` request that gets all the route information
@@ -97,13 +111,15 @@
     // This request will return a complete route JSON object.
     // You should display the returned information in 
     // `#route-by-id-elements` (after clearing it first).
-    function getRouteById() {
+    function getRouteById(event) {
         $('#route-ID').text('');
         const routeId = $('#route-ID').val();
         console.log(routeId);
+        const url = baseUrl+`/routes/`+routeId
         $.ajax({
-            "url": `https://7403cbrsoh.execute-api.us-east-1.amazonaws.com/prod/routes/${routeId}`,
+            "url" : url,
             "method": "GET",
+            "timeout": 0,
         }).done(function (response) {
             console.log(response);
             $('#route-by-id-elements').append(`<li>Partition Key: ${response.partitionKey}</li><br><li>Route ID: ${response.routeId}</li><br><li>Length: ${response.length}</li><br><li>Route: ${response.route}</li>`);
