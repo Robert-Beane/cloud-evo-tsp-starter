@@ -2,7 +2,7 @@
 
     // You'll need to replace this with the URL you get when you
     // deploy your API Gateway.
-    const baseUrl = 'https://7403cbrsoh.execute-api.us-east-1.amazonaws.com/prod';
+    const baseUrl = 'https://7403cbrsoh.execute-api.us-east-1.amazonaws.com/prod'
     console.log(`The base URL is ${baseUrl}.`);
 
     // Set up the functions to be called when the user clicks on any
@@ -97,33 +97,17 @@
     // This request will return a complete route JSON object.
     // You should display the returned information in 
     // `#route-by-id-elements` (after clearing it first).
-    function getRouteById(event) {
+    function getRouteById() {
+        $('#route-ID').text('');
         const routeId = $('#route-ID').val();
-        $('route-by-id').text('');
-        retrieveRouteById(routeId);
-    }
-
-    function retrieveRouteById(routeId) {
+        console.log(routeId);
         $.ajax({
-            method: 'GET',
-            url: baseUrl + '/routes/:routeId',
-            data: JSON.stringify({
-                routeId: routeId,
-            }),
-            contentType: 'application/json',
-            success: showRouteById,
-        })
+            "url": `https://7403cbrsoh.execute-api.us-east-1.amazonaws.com/prod/routes/${routeId}`,
+            "method": "GET",
+        }).done(function (response) {
+            console.log(response);
+            $('#route-by-id-elements').append(`<li>Partition Key: ${response.partitionKey}</li><br><li>Route ID: ${response.routeId}</li><br><li>Length: ${response.length}</li><br><li>Route: ${response.route}</li>`);
+        });
     }
-
-    function showRouteById(result) {
-        const partitionKey = result.partitionKey;
-        const routeId = result.routeId;
-        const length = result.length;
-        const route = result.route;
-
-        $('#route-by-id-elements').append(`<li>Partition Key: ${partitionKey}</li><br>' +
-            '<li>Route ID: ${routeId}</li><br><li>Length: ${length}</li><br><li>Route: ${route}</li>`);
-    }
-
 
 }(jQuery));
