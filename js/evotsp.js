@@ -97,8 +97,33 @@
     // This request will return a complete route JSON object.
     // You should display the returned information in 
     // `#route-by-id-elements` (after clearing it first).
-    function getRouteById() {
-        alert('You need to implement getRouteById()');
+    function getRouteById(event) {
+        const routeId = $('#route-ID').val();
+        $('route-by-id').text('');
+        retrieveRouteById(routeId);
     }
+
+    function retrieveRouteById(routeId) {
+        $.ajax({
+            method: 'GET',
+            url: baseUrl + '/routes/:routeId',
+            data: JSON.stringify({
+                routeId: routeId,
+            }),
+            contentType: 'application/json',
+            success: showRouteById,
+        })
+    }
+
+    function showRouteById(result) {
+        const partitionKey = result.partitionKey;
+        const routeId = result.routeId;
+        const length = result.length;
+        const route = result.route;
+
+        $('#route-by-id-elements').append(`<li>Partition Key: ${partitionKey}</li><br>' +
+            '<li>Route ID: ${routeId}</li><br><li>Length: ${length}</li><br><li>Route: ${route}</li>`);
+    }
+
 
 }(jQuery));
