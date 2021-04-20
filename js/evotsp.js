@@ -91,15 +91,14 @@
         const runId = $('#runId-text-field').val();
         const numLimit = $('#num-best-to-get').val();
         const generation = $('#generation-text-field').val();
-        const url = baseUrl+`/best?runId=`+runId+`&generation=`+generation+`&numToReturn=`+numLimit;
-
+        const url = baseUrl+`/best?runId=${runId}&generation=${generation}&numToReturn=${numLimit}`;
         $.ajax({
             "url": url,
             "method": "GET",
             "timeout": 0,
         }).done(function (response) {
             for (let i = 0; i < response.length; i++){
-                $('#best-route-list').append(`<ol>${response[i].length} (${response[i].routeId})</ol>`);
+                $('#best-route-list').append(`<li>${response[i].length} (${response[i].routeId})</li>`);
             }
         });
     }
@@ -115,7 +114,7 @@
         $('#route-ID').text('');
         const routeId = $('#route-ID').val();
         console.log(routeId);
-        const url = baseUrl+`/routes/`+routeId
+        const url = baseUrl+`/routes/${routeId}`;
         $.ajax({
             "url" : url,
             "method": "GET",
