@@ -2,7 +2,7 @@
 
     // You'll need to replace this with the URL you get when you
     // deploy your API Gateway.
-    const baseUrl = 'https://7403cbrsoh.execute-api.us-east-1.amazonaws.com/prod'
+    const baseUrl = 'https://bzet5kb9ib.execute-api.us-east-1.amazonaws.com/prod'
     console.log(`The base URL is ${baseUrl}.`);
 
     // Set up the functions to be called when the user clicks on any
@@ -75,7 +75,7 @@
     function showRoute(result) {
         console.log('New route received from API: ', result);
         const routeId = result.routeId;
-        const length = result.length;
+        const length = result.len;
         $('#new-route-list').append(`<li>We generated route ${routeId} with length ${length}.</li>`);
     }
 
@@ -95,11 +95,12 @@
         $.ajax({
             "url": url,
             "method": "GET",
-            "timeout": 0,
         }).done(function (response) {
             for (let i = 0; i < response.length; i++){
-                $('#best-route-list').append(`<li>${response[i].length} (${response[i].routeId})</li>`);
+
+                $('#best-route-list').append(`<li>${response[i]['len']} (${response[i]['routeId']})</li>`);
             }
+            console.log(response);
         });
     }
 
@@ -111,17 +112,16 @@
     // You should display the returned information in 
     // `#route-by-id-elements` (after clearing it first).
     function getRouteById(event) {
-        $('#route-ID').text('');
+        $('#route-by-id-elements').text('');
         const routeId = $('#route-ID').val();
         console.log(routeId);
         const url = baseUrl+`/routes/${routeId}`;
         $.ajax({
             "url" : url,
             "method": "GET",
-            "timeout": 0,
-        }).done(function (response) {
-            console.log(response);
-            $('#route-by-id-elements').append(`<li>Partition Key: ${response.partitionKey}</li><br><li>Route ID: ${response.routeId}</li><br><li>Length: ${response.length}</li><br><li>Route: ${response.route}</li>`);
+        }).done(function (data) {
+            console.log(data);
+            $('#route-by-id-elements').append(`<br><li>Partition Key: ${data[0]['partitionKey']}</li><br><li>Route ID: ${data[0]['routeId']}</li><br><li>Length: ${data[0]['len']}</li><br><li>Route: ${data[0]['route']}</li>`);
         });
     }
 
